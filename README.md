@@ -1,23 +1,26 @@
 # rspb
 
-rust fork of [ptpb/pb](https://pb.mgt.moe)
+rust fork of [ptpb/pb](http://pb.lan)
 
 ## TL;DR
 
 Create a new paste from the output of cmd:
 
 ```
-cmd | curl -F c=@- https://pb.mgt.moe/
+cmd | curl -F c=@- http://pb.lan/
 ```
+
 ## Usage
+
 ### Creating pastes
+
 ```
-> echo hi | curl -F c=@- https://pb.mgt.moe/
+> echo hi | curl -F c=@- http://pb.lan/
 date: 2021-01-16 03:26:09.614299435 UTC
 digest: 0b8b60248fad7ac6dfac221b7e01a8b91c772421a15b387dd1fb2d6a94aee438
 short: e74l
 size: 3
-url: http://pb.mgt.moe/e74l
+url: http://pb.lan/e74l
 status: created
 uuid: 7535e567-173f-4ba0-98ce-71cdd8f02d69
 ```
@@ -27,37 +30,43 @@ uuid: 7535e567-173f-4ba0-98ce-71cdd8f02d69
     <textarea placeholder='Put your paste here' id="c" name='c' rows='20' style="width: 100%; font-family: monospace; font-size: 14px" required></textarea>
   </label>
   <div style="display: flex; align-items: center">
-    <input type="submit" value="Submit" formaction="https://pb.mgt.moe/" formmethod="POST">
+    <input type="submit" value="Submit" formaction="http://pb.lan/" formmethod="POST">
   </div>
 </form>
 
 ### Updating pastes
-```
-> curl -X PUT -F c=@- pb.mgt.moe/7535e567-173f-4ba0-98ce-71cdd8f02d69 < config.yaml
 
-http://pb.mgt.moe/e74l updated
 ```
+> curl -X PUT -F c=@- pb.lan/7535e567-173f-4ba0-98ce-71cdd8f02d69 < config.yaml
+
+http://pb.lan/e74l updated
+```
+
 ### Using mimetypes
 
 Append '.pdf' to hint at browsers that they should probably display a pdf document:
+
 ```
-https://pb.mgt.moe/ullp.pdf
+http://pb.lan/ullp.pdf
 ```
+
 ### Deleting pastes
+
 ```
-> curl -X DELETE pb.mgt.moe/7535e567-173f-4ba0-98ce-71cdd8f02d69
+> curl -X DELETE pb.lan/7535e567-173f-4ba0-98ce-71cdd8f02d69
 
 deleted 7535e567-173f-4ba0-98ce-71cdd8f02d69
 ```
+
 ### Shortening URLs
 
 ```
-> echo http://google.com | curl -F c=@- pb.mgt.moe/u
+> echo http://google.com | curl -F c=@- pb.lan/u
 date: 2021-01-16 03:29:13.865511999 UTC
 digest: a1adc32c271516bfb33069304087db349649146f24744b4028d2f975697fd707
 short: 1unf
 size: 11
-url: http://pb.mgt.moe/1unf
+url: http://pb.lan/1unf
 status: created
 uuid: b87dcc37-a4c2-4d18-a3a3-c2d875912cde
 ```
@@ -67,7 +76,7 @@ uuid: b87dcc37-a4c2-4d18-a3a3-c2d875912cde
     <textarea placeholder='Put your url here' id="c" name='c' rows='1' style="width: 100%; font-family: monospace; font-size: 14px" required></textarea>
   </label>
   <div style="display: flex; align-items: center">
-    <input type="submit" value="Submit" formaction="https://pb.mgt.moe/u" formmethod="POST">
+    <input type="submit" value="Submit" formaction="http://pb.lan/u" formmethod="POST">
   </div>
 </form>
 
@@ -76,18 +85,18 @@ uuid: b87dcc37-a4c2-4d18-a3a3-c2d875912cde
 add '.rs' to the url to highlight rust source
 
 ```
-http://pb.mgt.moe/1e6d.rs
+http://pb.lan/1e6d.rs
 ```
 
 ### Vanity pastes
 
 ```
-> echo nin | curl -F c=@- https://pb.mgt.moe/mom
+> echo nin | curl -F c=@- http://pb.lan/mom
 date: 2021-01-16 03:34:22.359830934 UTC
 digest: e2f55e5ed88dee2a50c9bb255ad87657e7f173e2560e27ceec8b206e2bc4afaf
 short: 20ko
 size: 4
-url: http://pb.mgt.moe/mom
+url: http://pb.lan/mom
 status: created
 uuid: bac23f0c-0f06-4525-8ae4-624268485ef7
 ```
@@ -95,18 +104,18 @@ uuid: bac23f0c-0f06-4525-8ae4-624268485ef7
 ### Sunsetting pastes
 
 ```
-> echo "This message will self-destruct in 5 seconds" | curl -F sunset=5 -F c=@- pb.mgt.moe
+> echo "This message will self-destruct in 5 seconds" | curl -F sunset=5 -F c=@- pb.lan
 date: 2021-01-16 03:32:33.225306167 UTC
 digest: 15cefec0e22ce1b1bfc1d06c77620cc41f8d6f1664edb023a8d63b5d0b6ef5a7
 short: 19vl
 size: 45
-url: http://pb.mgt.moe/19vl
+url: http://pb.lan/19vl
 status: created
 uuid: 7ede8735-7af3-4ee7-87bb-fc63d2a39306
-> curl http://pb.mgt.moe/19vl
+> curl http://pb.lan/19vl
 This message will self-destruct in 5 seconds
 > sleep 5
-> curl http://pb.mgt.moe/19vl
+> curl http://pb.lan/19vl
 expired
 ```
 
@@ -117,7 +126,7 @@ expired
   <div style="display: flex; align-items: center">
   <label>Expire in (secs): </label>
     <input id="sunset" name='sunset' type='number' min='60' style="width: 20em" value='360000' step='60' required/>
-    <input type="submit" value="Submit" formaction="https://pb.mgt.moe/" formmethod="POST">
+    <input type="submit" value="Submit" formaction="http://pb.lan/" formmethod="POST">
   </div>
 </form>
 

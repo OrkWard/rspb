@@ -1,6 +1,6 @@
 use config::Config;
-use model::DataTrees;
 use mimalloc::MiMalloc;
+use model::DataTrees;
 
 use warp::Filter;
 mod base32;
@@ -19,7 +19,7 @@ async fn main() {
     let help = markdown::render(
         tokio::fs::read_to_string("README.md")
             .await
-            .unwrap_or_else(|_| String::from("cmd | curl -F c=@- https://pb.mgt.moe/")),
+            .unwrap_or_else(|_| String::from("cmd | curl -F c=@- http://pb.lan/")),
     );
     highlighter::highlight_lines(&String::from(""), &String::from("rs"));
     flexi_logger::Logger::try_with_env_or_str("info")
