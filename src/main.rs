@@ -1,6 +1,8 @@
 use config::Config;
+use log::info;
 use mimalloc::MiMalloc;
 use model::DataTrees;
+use tokio::signal::unix::{signal, SignalKind};
 
 use warp::Filter;
 mod base32;
@@ -75,5 +77,29 @@ async fn main() {
         .or(update_route)
         .or(help_route)
         .with(warp::log("rspb"));
-    warp::serve(route).run((config.ip, config.port)).await;
+
+    let (shutdown_tx, shutdown_rx) = tokio::sync::oneshot::channel();
+
+    let (addr, server) = warp::serve(route)
+        .bind_with_graceful_shutdown((config.ip, config.port), async move {
+            shutdown_rx.await.ok();
+        });
+
+    info!("Server starting on {}", addr);
+
+    let mut sigterm = signal(SignalKind::terminate()).expect("Failed to create SIGTERM handler");
+
+    tokio::select! {
+        _ = server => {
+            info!("Server stopped gracefully");
+        }
+        _ = tokio::signal::ctrl_c() => {
+            info!("Received SIGINT (Ctrl+C), starting graceful shutdown...");
+            let _ = shutdown_tx.send(());
+        }
+        _ = sigterm.recv() => {
+            info!("Received SIGTERM, starting graceful shutdown...");
+            let _ = shutdown_tx.send(());
+        }
+    }
 }
